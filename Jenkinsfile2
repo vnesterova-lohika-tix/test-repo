@@ -17,19 +17,21 @@ node('master') {
         switch(params.BRANCH) {
   case "hotfix*":
     result = "hotfix"
+    token = "5cb5865a-04a6-400a-bb9d-3d19d80695ba"
     break
   case "${branch}":
     result = "master"
+    token = "658a3396-ffad-41c2-8db5-07d023d047d0"
     break
   default:
-    result = "def"
+    result = "no such branch"
     break
 }
 echo "${result}"
-                //sh """
- //curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
-// """
-            //echo 'You have frozen the branch'
+                sh """
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$result/?access_token=$token'
+"""
+            echo 'You have frozen the branch $params.BRANCH'
         }
 
             }
