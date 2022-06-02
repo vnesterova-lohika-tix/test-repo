@@ -18,7 +18,7 @@ node('master') {
   case "hotfix":
     result = "hotfix"
     break
-  case "${version}":
+  case "${branch}":
     result = "master"
     break
   default:
