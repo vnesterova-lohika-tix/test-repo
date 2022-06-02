@@ -6,6 +6,10 @@ node('master') {
         gitParameter name: 'PR',
                      type: 'PT_PULL_REQUEST',
                      defaultValue: '5',
+                     sortMode: 'DESCENDING_SMART',
+                        gitParameter name: 'BRANCH',
+                     type: 'PT_BRANCH',
+                     defaultValue: 'master',
                      sortMode: 'DESCENDING_SMART'
     }
 
