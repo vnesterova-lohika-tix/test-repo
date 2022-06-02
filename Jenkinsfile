@@ -37,9 +37,11 @@ node('master') {
                }
     stage('Unfreeze specific PR') {
         if (params.PR == '5') {
-            sh """
-                     curl -d "frozen=false&unblocked_prs=[5]" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
-                     """
+            echo 'worked'
+//             sh """
+            
+//                      curl -d "frozen=false&unblocked_prs=[5]" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+//                      """
         }
                  else {
             echo 'skip'
