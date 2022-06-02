@@ -18,7 +18,7 @@ node('master') {
             if (env.ACTION == 'Freeze') {
         stage('Freezing') {
                 sh """
- curl -d "frozen=true&user_name=Scooby Doo" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
  """
             echo 'You have frozen the branch'
         }
@@ -29,14 +29,14 @@ node('master') {
         stage('Unfreezing') {
             if (env.ACTION == 'Unfreeze') {
                 sh """
- curl -d "frozen=false&user_name=Scooby Doo" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
  """
                 echo 'You have unfrozen the branch'
             }
         }
                }
     stage('Unfreeze specific PR') {
-        if ('${params.PULL_REQUESTS}' == 'master') {
+        if (params.PR == '5') {
             sh """
                      curl -d "frozen=false&unblocked_prs=[5]" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
                      """
