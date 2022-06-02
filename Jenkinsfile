@@ -11,7 +11,7 @@ node('master') {
             if (env.ACTION == 'Freeze') {
         stage('Freezing') {
                 sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/params.BRANCH/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$params.BRANCH/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
  """
             echo 'You have frozen the branch'
         }
