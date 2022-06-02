@@ -4,21 +4,14 @@ node('master') {
         choice(choices:['master', 'hotfix*'], description: 'Choose branch', name: 'BRANCH')
         //choice(choices:['5','4'], description: 'Choose PR if you want to unfreeze it', name: 'PR')
         gitParameter name: 'PR', type: 'PT_PULL_REQUEST', defaultValue: '5', sortMode: 'DESCENDING_SMART'
-        gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
+        //gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
     }
 
-        // stage('Manual Step') {
-
-        //         echo "choice: ${ACTION}"
-        //         echo "choice params.: " + params.BRANCH
-        //         echo "choice env: " + env.PR
-
-        // }
 
             if (env.ACTION == 'Freeze') {
         stage('Freezing') {
                 sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/params.BRANCH/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
  """
             echo 'You have frozen the branch'
         }
