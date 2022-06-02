@@ -15,7 +15,7 @@ node('master') {
         if (env.ACTION == 'Freeze') {
         stage('Freezing') {
         switch(params.BRANCH) {
-  case "hotfix":
+  case "hotfix*":
     result = "hotfix"
     break
   case "${branch}":
