@@ -3,14 +3,8 @@ node('master') {
         choice(choices:['Freeze', 'Unfreeze'], description: 'Freeze or unfreeze branch from merging', name: 'ACTION')
         choice(choices:['master', 'hotfix*'], description: 'Choose branch', name: 'BRANCH')
         //choice(choices:['5','4'], description: 'Choose PR if you want to unfreeze it', name: 'PR')
-        gitParameter name: 'PR',
-                     type: 'PT_PULL_REQUEST',
-                     defaultValue: '5',
-                     sortMode: 'DESCENDING_SMART',
-                        gitParameter name: 'BRANCH',
-                     type: 'PT_BRANCH',
-                     defaultValue: 'master',
-                     sortMode: 'DESCENDING_SMART'
+        gitParameter name: 'PR', type: 'PT_PULL_REQUEST', defaultValue: '5', sortMode: 'DESCENDING_SMART'
+        gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
     }
 
         // stage('Manual Step') {
