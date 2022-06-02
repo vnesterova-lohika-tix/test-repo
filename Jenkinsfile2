@@ -1,5 +1,5 @@
-def branch = params.BRANCH
-
+//def branch = params.BRANCH
+def branch = 'master'
 node('master') {
     parameters {
         choice(choices:['Freeze', 'Unfreeze'], description: 'Freeze or unfreeze branch from merging', name: 'ACTION')
