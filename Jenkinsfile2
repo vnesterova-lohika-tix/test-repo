@@ -24,7 +24,7 @@ node('master') {
         stage('Unfreezing') {
             if (env.ACTION == 'Unfreeze') {
                 sh """
- curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$branch/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/origin/$branch/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
  """
                 echo 'You have unfrozen the branch'
             }
