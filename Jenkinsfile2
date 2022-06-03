@@ -11,14 +11,14 @@ node('master') {
         //gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
     }
 
-def getCurrentWeight() {
-        gitCredentialsWrapper {
-                String repoUri = "https://${steps.env.GITHUB_USR}:${steps.env.GITHUB_PSW}@github.com/tradeix/ng-platform-deploy.git"
-                String branch = ['/bin/bash', '-c', "git ls-remote --heads $repoUri | grep hotfix | tail -1 | cut -d \"/\" -f3"].execute().text.toString()
-                String version = (branch =~ /\d{1,4}\.\d{1,4}/).findAll()[0]
-                return version
-        }
-    }
+//def getCurrentWeight() {
+  //      gitCredentialsWrapper {
+    //            String repoUri = "https://${steps.env.GITHUB_USR}:${steps.env.GITHUB_PSW}@github.com/tradeix/ng-platform-deploy.git"
+      //          String branch = ['/bin/bash', '-c', "git ls-remote --heads $repoUri | grep hotfix | tail -1 | cut -d \"/\" -f3"].execute().text.toString()
+        //        String version = (branch =~ /\d{1,4}\.\d{1,4}/).findAll()[0]
+          //      return version
+        //}
+    //}
 
         if (env.ACTION == 'Freeze') {
         stage('Freezing') {
