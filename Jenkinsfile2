@@ -31,7 +31,7 @@ echo "${result}"
                 sh """
  curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$result/?access_token=$token'
 """
-            echo 'You have frozen the branch {$params.BRANCH}'
+            echo 'You have frozen master branch'
         }
 
             }
