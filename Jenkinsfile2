@@ -1,0 +1,69 @@
+//def branch = params.BRANCH
+def branch = 'master'
+def token_test_repo_master = '658a3396-ffad-41c2-8db5-07d023d047d0'
+def token_test_repo_hotfix = '5cb5865a-04a6-400a-bb9d-3d19d80695ba'
+node('master') {
+    parameters {
+        choice(choices:['Freeze', 'Unfreeze'], description: 'Freeze or unfreeze branch from merging', name: 'ACTION')
+        choice(choices:['master', 'hotfix*'], description: 'Choose branch', name: 'BRANCH')
+        choice(choices:['3','4','5'], description: 'Choose PR if you want to unfreeze it', name: 'PR')
+        //gitParameter name: 'PR', type: 'PT_PULL_REQUEST', defaultValue: '5', sortMode: 'DESCENDING_SMART'
+        //gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
+    }
+
+
+        if (env.ACTION == 'Freeze') {
+        stage('Freezing') {
+        switch(params.BRANCH) {
+  case "hotfix*":
+    result = "hotfix"
+    token = "5cb5865a-04a6-400a-bb9d-3d19d80695ba"
+    break
+  case "${branch}":
+    result = "master"
+    token = "658a3396-ffad-41c2-8db5-07d023d047d0"
+    break
+  default:
+    result = "no such branch"
+    break
+}
+echo "${result}"
+                sh """
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$result/?access_token=$token'
+"""
+            echo 'You have frozen master branch'
+        }
+
+            }
+
+               else {
+        stage('Unfreezing') {
+            if (env.ACTION == 'Unfreeze') {
+                sh """
+ curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$branch/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ """
+                echo 'You have unfrozen master branch'
+            }
+        }
+               }
+    stage('Unfreeze specific PR') {
+        if (params.PR == '5') {
+           sh """
+           curl -d "frozen=true&unblocked_prs=[5]" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+           """
+           echo 'You have unfrozen 5 PR'
+        }
+                 else {
+            echo 'skip'
+                 }
+    }
+}
+
+//def getCurrentWeight() {
+//         gitCredentialsWrapper {
+//                 String repoUri = "https://${steps.env.GITHUB_USR}:${steps.env.GITHUB_PSW}@github.com/tradeix/ng-platform-deploy.git"
+//                 String branch = ['/bin/bash', '-c', "git ls-remote --heads $repoUri | grep hotfix | tail -1 | cut -d \"/\" -f3"].execute().text.toString()
+//                 String version = (branch =~ /\d{1,4}\.\d{1,4}/).findAll()[0]
+//                 return version
+//         }
+//     }
