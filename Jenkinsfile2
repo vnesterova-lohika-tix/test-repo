@@ -1,8 +1,10 @@
-APP="Item1, Item2, Item3"
+
 
 node('master') {
    BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].userName}"
 echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
+
+APP="Item1, Item2, Item3"
 
     parameters {
         string(name: 'BRANCH', defaultValue: 'master', description: 'Choose branch')
