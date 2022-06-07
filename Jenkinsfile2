@@ -16,11 +16,10 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
             stage('Freezing') {
          
                 sh """
-                def full_string = "repo1 repo2"
-def arr = full_string.split(" ")
-                for (i in arr) {
- 
-
+myArray=("cat" "dog" "mouse" "frog)
+for str in ${myArray[@]}; do
+  echo $str
+done
  curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${i}/$params.BRANCH/?access_token=$ORG_TOKEN'
             }
 """
