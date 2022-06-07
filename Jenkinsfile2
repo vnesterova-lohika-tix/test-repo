@@ -1,7 +1,7 @@
 
 
 node('master') {
-   BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].shortDescription} / ${currentBuild.getBuildCauses()[0].userId}"
+   BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].shortDescription}"
 echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
 
     parameters {
@@ -16,7 +16,7 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
             stage('Freezing') {
 
                 sh """
- curl -d "frozen=true&user_name=bn" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo1/$params.BRANCH/?access_token=$ORG_TOKEN'
+ curl -d "frozen=true&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo1/$params.BRANCH/?access_token=$ORG_TOKEN'
 """
             
         }
@@ -25,7 +25,7 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
             stage('Unfreezing') {
             if (env.ACTION == 'Unfreeze') {
                 sh """
- curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$params.BRANCH/?access_token=$ORG_TOKEN'
+ curl -d "frozen=false&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$params.BRANCH/?access_token=$ORG_TOKEN'
  """
                
             }
