@@ -1,7 +1,6 @@
 
-
 node('master') {
-   BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].shortDescription}"
+   BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].userName}"
 echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
 
     parameters {
@@ -17,7 +16,13 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
             stage('Freezing') {
          
                 sh """
- curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$params.BRANCH/?access_token=$ORG_TOKEN'
+                def full_string = "repo1 repo2"
+def arr = full_string.split(" ")
+                for (i in arr) {
+ 
+
+ curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${i}/$params.BRANCH/?access_token=$ORG_TOKEN'
+            }
 """
             
         }
