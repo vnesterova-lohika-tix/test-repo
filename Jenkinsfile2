@@ -19,7 +19,7 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
             stage('Freezing') {
 
                 sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo/$params.BRANCH/?access_token=$ORG_TOKEN'
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo1/$params.BRANCH/?access_token=$ORG_TOKEN'
 """
             echo 'You have frozen master branch'
         }
