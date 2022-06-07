@@ -4,7 +4,7 @@ node('master') {
    BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].userName}"
 echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
 
-APP="Item1, Item2, Item3"
+
 
     parameters {
         string(name: 'BRANCH', defaultValue: 'master', description: 'Choose branch')
@@ -13,7 +13,7 @@ APP="Item1, Item2, Item3"
 
 withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
 
-
+APP="Item1, Item2, Item3"
 env.APP.tokenize(",").each { item ->
                         echo "$item"
 
