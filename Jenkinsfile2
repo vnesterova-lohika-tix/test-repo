@@ -12,14 +12,15 @@ echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
     }
 
 withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
-
+ def repos = ['repo1', 'repo2']
+          repos.each() {
 
         switch(params.ACTION) {
   case "Freeze":
    bool = true
             stage('Freezing') {
-         def repos = ['repo1', 'repo2']
-          repos.each() {
+        //  def repos = ['repo1', 'repo2']
+        //   repos.each() {
 
                 sh """
                 echo $it
@@ -27,19 +28,20 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
  curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
             
 """
-          }
+          //}
         }
     break
   case "Unfreeze":
    bool = false
             stage('Unfreezing') {
-            if (env.ACTION == 'Unfreeze') {
+        //     def repos = ['repo1', 'repo2']
+        //   repos.each() {
                 sh """
- curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$params.BRANCH/?access_token=$ORG_TOKEN'
+ curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
  """
                
-            }
-        }
+            
+        //}
     break
   default:
     result = "no such branch"
@@ -47,6 +49,6 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
 }
 
 
-
+        }
 }
 }
