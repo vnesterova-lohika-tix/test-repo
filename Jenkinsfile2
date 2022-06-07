@@ -1,7 +1,6 @@
-//def branch = params.BRANCH
-//def branch = 'master'
-//def token_test_repo_master = '658a3396-ffad-41c2-8db5-07d023d047d0'
-//def token_test_repo_hotfix = '5cb5865a-04a6-400a-bb9d-3d19d80695ba'
+BUILD_USER_NAME=$(echo $BUILD_CAUSE_JSON | tr "," "\n" | grep "userName" | awk -F\" '{print $4}')
+
+
 
 node('master') {
     parameters {
@@ -10,18 +9,15 @@ node('master') {
     }
 
 withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
-    // the code here can access $pass and $user
-
-//echo "My secret text is '${ORG_TOKEN}'"
 
         switch(params.ACTION) {
   case "Freeze":
             stage('Freezing') {
 
                 sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo1/$params.BRANCH/?access_token=$ORG_TOKEN'
+ curl -d "frozen=true&user_name=$BUILD_USER_NAME" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo1/$params.BRANCH/?access_token=$ORG_TOKEN'
 """
-            echo 'You have frozen master branch'
+            
         }
     break
   case "Unfreeze":
@@ -30,7 +26,7 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
                 sh """
  curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$params.BRANCH/?access_token=$ORG_TOKEN'
  """
-                echo 'You have unfrozen master branch'
+               
             }
         }
     break
@@ -39,28 +35,7 @@ withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     break
 }
 
-//         if (env.ACTION == 'Freeze') {
-//         stage('Freezing') {
 
-// echo "${result}"
-//                 sh """
-//  curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo/$result/?access_token=$ORG_TOKEN'
-// """
-//             echo 'You have frozen master branch'
-//         }
-
-//             }
-
-//                else {
-//         stage('Unfreezing') {
-//             if (env.ACTION == 'Unfreeze') {
-//                 sh """
-//  curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$branch/?access_token=$ORG_TOKEN'
-//  """
-//                 echo 'You have unfrozen master branch'
-//             }
-//         }
-//                }
 
 }
 }
