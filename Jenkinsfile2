@@ -13,21 +13,21 @@ echo "BUILD_TRIGGER_BY: ${BUILD_TRIGGER_BY}"
 
 withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
 
-APP="Item1, Item2, Item3"
-env.APP.tokenize(",").each { item ->
-                        echo "$item"
 
         switch(params.ACTION) {
   case "Freeze":
    bool = true
             stage('Freezing') {
-         
-                sh """
+         def repos = ['repo1', 'repo2']
+          repos.each() {
 
- curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${i}/$params.BRANCH/?access_token=$ORG_TOKEN'
-            }
-"""
+                sh """
+                echo $it
+       echo "CURl here for ${it}"
+ curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
             
+"""
+          }
         }
     break
   case "Unfreeze":
@@ -48,6 +48,5 @@ env.APP.tokenize(",").each { item ->
 
 
 
-}
 }
 }
