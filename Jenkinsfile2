@@ -14,7 +14,7 @@ node('master') {
 withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     // the code here can access $pass and $user
 
-echo "My secret text is '${ORG_TOKEN}'"
+//echo "My secret text is '${ORG_TOKEN}'"
 
         if (env.ACTION == 'Freeze') {
         stage('Freezing') {
@@ -33,7 +33,7 @@ echo "My secret text is '${ORG_TOKEN}'"
 }
 echo "${result}"
                 sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$result/?access_token=$token'
+ curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo/$result/?access_token=$ORG_TOKEN'
 """
             echo 'You have frozen master branch'
         }
@@ -44,7 +44,7 @@ echo "${result}"
         stage('Unfreezing') {
             if (env.ACTION == 'Unfreeze') {
                 sh """
- curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$branch/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
+ curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/repo2/$branch/?access_token=$ORG_TOKEN'
  """
                 echo 'You have unfrozen master branch'
             }
