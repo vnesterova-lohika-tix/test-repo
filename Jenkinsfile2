@@ -32,9 +32,6 @@ node('master') {
 
         }
         break
-      default:
-        result = "no such branch"
-        break
       }
 
     }
