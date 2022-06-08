@@ -26,7 +26,7 @@ curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/$
 """
            }
            catch (err) {
-error "Everything is very bad"
+println "Everything is very bad"
            }
            
           sh """
