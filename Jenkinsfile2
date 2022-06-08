@@ -12,28 +12,20 @@ node('master') {
     def repos = ['repo1', 'repo2']
     repos.each() {
 
-int status = sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
 
-if (status == 404) {
-    println("Returned status code = $status when calling $url")
-}
 
 
       switch (params.ACTION) {
-                //   final def (String response, int code) =
-                //             sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
-                //                 .trim()
-                //                 .tokenize("\n")
-
-                //         echo "HTTP response status code: $code"
-
-                //         if (code == 200) {
-                //             echo response
-                //         }
+                //   curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
       case "Freeze":
         bool = true
         stage('Freezing') {
-
+            def response = sh returnStdout: true, script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'"
+Pattern pattern = Pattern.compile("(\\d{3})");
+Matcher matcher = pattern.matcher(s);
+if (matcher.find()) {
+  matcher.group(1);
+}
           sh """
           curl -d "account=vnesterova-test-organization&repository=${it}&branch=$params.BRANCH&frozen=$bool&user_name=${BUILD_TRIGGER_BY}&access_token=$ORG_TOKEN" -X POST 'https://www.mergefreeze.com/api/branches'
           """ 
