@@ -17,22 +17,18 @@ node('master') {
         bool = true
         stage('Freezing') {
 
-          sh ""
-          "
+          sh """
           curl - d "account=vnesterova-test-organization&repository=${it}&branch=$params.BRANCH&frozen=$bool&user_name=${BUILD_TRIGGER_BY}&access_token=$ORG_TOKEN" - X POST 'https://www.mergefreeze.com/api/branches'
-          ""
-          " 
+          """ 
         }
         break
       case "Unfreeze":
         bool = false
         stage('Unfreezing') {
 
-          sh ""
-          "
+          sh """
           curl - d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" - X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
-          ""
-          "
+          """
 
         }
         break
