@@ -21,7 +21,7 @@ node('master') {
         bool = true
         stage('Freezing') {
            try {
-def returnedVal = sh script: 'curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN''
+def returnedVal = sh script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'"
 if (returnedVal.toLowerCase().contains('exist')){
     error("got doesn't exist")
 }
