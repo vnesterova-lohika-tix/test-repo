@@ -14,7 +14,7 @@ node('master') {
 
 int status = sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
 
-if (status = 404) {
+if (status == 404) {
     println("Returned status code = $status when calling $url")
 }
 
