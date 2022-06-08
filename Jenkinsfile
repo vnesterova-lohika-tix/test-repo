@@ -1,41 +1,44 @@
 node('master') {
-    parameters {
-        choice(choices:['Freeze', 'Unfreeze'], description: 'Freeze or unfreeze branch from merging', name: 'ACTION')
-        choice(choices:['master', 'hotfix*'], description: 'Choose branch', name: 'BRANCH')
-        //choice(choices:['5','4'], description: 'Choose PR if you want to unfreeze it', name: 'PR')
-        gitParameter name: 'PR', type: 'PT_PULL_REQUEST', defaultValue: '5', sortMode: 'DESCENDING_SMART'
-        //gitParameter name: 'BRANCH', type: 'PT_BRANCH', defaultValue: 'master', sortMode: 'DESCENDING_SMART'
-    }
+  //may be skipped
+  BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].userName}"
+
+  parameters {
+    string(name: 'BRANCH', defaultValue: 'master', description: 'Choose branch')
+    choice(choices: ['Freeze', 'Unfreeze'], description: 'Freeze or unfreeze branch from merging', name: 'ACTION')
+  }
+
+  withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
+    //add here repos for umbrella
+    def repos = ['repo1', 'repo2']
+    repos.each() {
 
 
-            if (env.ACTION == 'Freeze') {
+
+      switch (params.ACTION) {
+      case "Freeze":
+        bool = true
         stage('Freezing') {
-                sh """
- curl -d "frozen=true&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/$params.BRANCH/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
- """
-            echo 'You have frozen the branch'
+
+          sh """
+          curl -d "account=vnesterova-test-organization&repository=${it}&branch=$params.BRANCH&frozen=$bool&user_name=${BUILD_TRIGGER_BY}&access_token=$ORG_TOKEN" -X POST 'https://www.mergefreeze.com/api/branches'
+          """ 
         }
-
-            }
-
-               else {
+        break
+      case "Unfreeze":
+        bool = false
         stage('Unfreezing') {
-            if (env.ACTION == 'Unfreeze') {
-                sh """
- curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
- """
-                echo 'You have unfrozen the branch'
-            }
+
+          sh """
+           curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
+          """
+
         }
-               }
-    stage('Unfreeze specific PR') {
-        if (params.PR == '5') {
-           sh """
-           curl -d "frozen=true&unblocked_prs=[5]" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-lohika-tix/test-repo/master/?access_token=658a3396-ffad-41c2-8db5-07d023d047d0'
-           """
-        }
-                 else {
-            echo 'skip'
-                 }
+        break
+      default:
+        result = "no such branch"
+        break
+      }
+
     }
+  }
 }
