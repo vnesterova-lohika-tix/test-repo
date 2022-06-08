@@ -12,6 +12,17 @@ node('master') {
     def repos = ['repo1', 'repo2']
     repos.each() {
 
+        final def (String response, int code) =
+                            sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
+                                .trim()
+                                .tokenize("\n")
+
+                        echo "HTTP response status code: $code"
+
+                        if (code == 200) {
+                            echo response
+                        }
+
       switch (params.ACTION) {
       case "Freeze":
         bool = true
