@@ -12,19 +12,24 @@ node('master') {
     def repos = ['repo1', 'repo2']
     repos.each() {
 
+int status = sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
+
+if (status != 200 && status != 201) {
+    error("Returned status code = $status when calling $url")
+}
 
 
       switch (params.ACTION) {
-                  final def (String response, int code) =
-                            sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
-                                .trim()
-                                .tokenize("\n")
+                //   final def (String response, int code) =
+                //             sh(script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'", returnStdout: true)
+                //                 .trim()
+                //                 .tokenize("\n")
 
-                        echo "HTTP response status code: $code"
+                //         echo "HTTP response status code: $code"
 
-                        if (code == 200) {
-                            echo response
-                        }
+                //         if (code == 200) {
+                //             echo response
+                //         }
       case "Freeze":
         bool = true
         stage('Freezing') {
