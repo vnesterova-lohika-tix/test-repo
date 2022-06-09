@@ -10,7 +10,7 @@ node('master') {
   withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     //add here repos for umbrella
     //def repos = ['repo1', 'repo2']
-    def repos = readFile "repositories.txt"
+    def repos = readFile "${env.WORKSPACE}/repositories.txt"
     repos.each() {
 
 
