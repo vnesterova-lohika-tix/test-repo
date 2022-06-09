@@ -11,7 +11,7 @@ node('master') {
     //add here repos for umbrella
     //def repos = ['repo1', 'repo2']
     checkout scm
-    def repos = readFile "repositories.txt"
+    def repos = readFileFromWorkspace('repositories.txt')
     repos.each() {
 
 
