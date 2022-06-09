@@ -9,7 +9,8 @@ node('master') {
 
   withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     //add here repos for umbrella
-    def repos = ['repo1', 'repo2']
+    //def repos = ['repo1', 'repo2']
+    def repos = readFile "repositories.txt"
     repos.each() {
 
 
@@ -45,7 +46,7 @@ if (returnedVal.toLowerCase().contains('exist')){
         stage('Unfreezing') {
 
           sh """
-           curl -d "frozen=false&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
+           curl -d "frozen=$bool&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
           """
 
         }
