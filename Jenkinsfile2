@@ -18,6 +18,6 @@ node('master') {
     new File("repositories.txt").eachLine { line ->
     println line
 }
-
+}
     
 }
