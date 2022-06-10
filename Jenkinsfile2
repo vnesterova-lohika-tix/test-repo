@@ -10,13 +10,54 @@ node('master') {
   withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     //add here repos for umbrella
     //def repos = ['repo1', 'repo2']
-    //checkout scm
-    //def repos = readFile(file: 'repositories2.txt')
-   env.WORKSPACE = pwd()
-   ls -la
-    //def repos = readFile "${env.WORKSPACE}/repositories2.txt"
-    
-   
+    checkout scm
+    def mydata = readFile file: 'repositories.txt' 
+            env.Repos = mydata
+    Repos.each() {
+
+
+
+
+      switch (params.ACTION) {
+                //   curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
+      case "Freeze":
+        bool = true
+        stage('Freezing') {
+           try {
+def returnedVal = sh script: "curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'"
+if (returnedVal.toLowerCase().contains('exist')){
+    error("got doesn't exist")
 }
-    
+           }
+           catch (Exception ex) {
+          sh """
+          curl -d "account=vnesterova-test-organization&repository=${it}&branch=$params.BRANCH&frozen=$bool&user_name=${BUILD_TRIGGER_BY}&access_token=$ORG_TOKEN" -X POST 'https://www.mergefreeze.com/api/branches'
+          """ 
+           }
+           finally{
+               sh """
+               curl -d "frozen=$bool&user_name=${BUILD_TRIGGER_BY}" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
+               """
+           }
+           
+
+        }
+        break
+      case "Unfreeze":
+        bool = false
+        stage('Unfreezing') {
+
+          sh """
+           curl -d "frozen=$bool&user_name=Valeriia Nesterova" -X POST 'https://www.mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
+          """
+
+        }
+        break
+      default:
+        result = "no such branch"
+        break
+      }
+
+    }
+  }
 }
