@@ -13,7 +13,8 @@ node('master') {
     checkout scm
     def mydata = readFile file: 'repositories.txt' 
             env.Repos = mydata
-    Repos.each() {
+            for ( int i = 0; i < Repos.size; i++ ) {
+    //Repos.each() {
 
 
 
