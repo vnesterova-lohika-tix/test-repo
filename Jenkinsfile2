@@ -13,7 +13,7 @@ node('master') {
     checkout scm
     //def repos = readFile(file: 'repositories2.txt')
     env.WORKSPACE = pwd()
-def version = readFile "${env.WORKSPACE}/repositories2.txt"
+def repos = readFile "${env.WORKSPACE}/repositories2.txt"
     repos.each() {
 
 
