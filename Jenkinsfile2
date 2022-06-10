@@ -10,11 +10,10 @@ node('master') {
   withCredentials([string(credentialsId: 'ORG_TOKEN', variable: 'ORG_TOKEN')]) {
     //add here repos for umbrella
     //def repos = ['repo1', 'repo2']
-    checkout scm
-    def mydata = readFile file: 'repositories.txt' 
-            env.Repos = mydata
-            for ( int i = 0; i < Repos.size; i++ ) {
-    //Repos.each() {
+
+    def repos = readFile file: 'repositories2.txt'.readLines().join("\n")
+
+    repos.each() {
 
 
 
