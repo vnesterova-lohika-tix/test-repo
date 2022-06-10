@@ -11,8 +11,8 @@ node('master') {
     //add here repos for umbrella
     //def repos = ['repo1', 'repo2']
 
-    def repos = readFile file: 'repositories.txt'.readLines().join("\n")
-
+    //def repos = readFile file: 'repositories.txt'.readLines().join("\n")
+def repos = readFile file: 'repositories.txt'.readLines()
     repos.each() {
 
 
