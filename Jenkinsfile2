@@ -12,11 +12,8 @@ node('master') {
     //def repos = ['repo1', 'repo2']
 
     //def repos = readFile file: 'repositories.txt'.readLines().join("\n")
-def repos = readFile file: 'repositories.txt'.join("\n")
-    repos.each() {
-
-
-
+def repos = readFile file: 'repositories.txt'
+    repos.join("\n") {
 
       switch (params.ACTION) {
                 //   curl -X GET 'https://mergefreeze.com/api/branches/vnesterova-test-organization/${it}/$params.BRANCH/?access_token=$ORG_TOKEN'
